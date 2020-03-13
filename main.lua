@@ -9,24 +9,38 @@ function love.load()
 
   player = {
     x = 400,
-    y = 0,
+    y = 500,
     dx = 1,
-    size = 40
+    size = 20,
+    color = {.8, .6, .63}
   }
 
   world = {
-    points = 0
+    color = {.1, .1, .1},
+    story = [[
+      Haunted by memories of the past, 
+      One man now goes on a journey,
+      left and right.
+      One man.... 
+
+      To finally find peace of mind
+      One man...
+      
+      ETHAM NIAGARA
+    ]]
   }
 
+  love.graphics.setNewFont('ComingSoon-Regular.ttf', 28)
   love.window.setMode(window.width, window.height)
 end
 
 function love.keypressed(key)
-  world.points = world.points + 1
 end
 
-function love.update(dt)
+function love.mousepressed(x, y, button, istouch)
+end
 
+function update_player(dt)
   win_width_minus_player = window.width - player.size
 
   if (player.x < 0) or (player.x > win_width_minus_player) then
@@ -34,20 +48,24 @@ function love.update(dt)
   end
   
   player.x = player.x + dt* 380 * player.dx
-
 end
 
-function draw_bird()
-  love.graphics.setColor(.87, .84, .27)
-  love.graphics.rectangle('fill', player.x, 300, player.size, player.size)
+function love.update(dt)
+  update_player(dt)
+end
+
+function draw_player()
+  love.graphics.setColor(unpack(player.color))
+  love.graphics.rectangle('fill', player.x, player.y, player.size, player.size)
 end
 
 function draw_background()
-  love.graphics.setColor(.14, .36, .46)
+  love.graphics.setColor(unpack(world.color))
   love.graphics.rectangle('fill', 0, 0, window.width, window.height)
-end 
+end
 
 function love.draw()
   draw_background()
-  draw_bird()
+  draw_player()
+  love.graphics.print(world.story, 10, 10)
 end
